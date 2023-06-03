@@ -1,0 +1,32 @@
+.comment{
+    color: #5b5d5f;
+}
+
+.string{
+    color: #239531;
+}
+
+.word{
+    color: #8e8e8e;
+}
+
+.paren{
+    color: #aa23b9;
+}
+
+.operator{
+    color: #dfdfdf;
+}
+
+.number{
+    color: #2364b9;
+}
+
+.boolean{
+    color: #d52450;
+}
+
+.sign{
+    color: #d79316;
+}
+
