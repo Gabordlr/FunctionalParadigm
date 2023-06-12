@@ -160,7 +160,7 @@ defmodule Syntaxhighlighter do
                 "<span class=\"variable\">" <>
                 val <>
                 " </span>" <>
-                "<span class=\"operator\">" <> head <> " </span>",
+                "<span class=\"operator\">" <> head <> "</span>",
               "",
               ""
             )

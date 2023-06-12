@@ -1,55 +1,66 @@
-from djitellopy import Tello
+import mysql.connector
+import matplotlib.pyplot as plt
+import numpy as np
+import keyboard
 
-tello = Tello()
-tello.connect()
+def actualizarGraficos():
+    temp = []
+    hum = []
+    acel = []
+    dist = []
 
-#hola como estas
+    mydb = mysql.connector.connect(
+      host="localhost",
+      user="Team3",
+      password="12345678",
+      database="tablateam3"
+    )
 
-tello.streamon()
-frame_read = tello.get_frame_read()
-# Print battery status
-print("Battery status: ", tello.get_battery(),"s")
+    mycursor = mydb.cursor()
+   
+    mycursor.execute("SELECT * FROM tabla_temp")
+    tempe = mycursor.fetchall()
+
+    mycursor.execute("SELECT * FROM tabla_hum")
+    hume = mycursor.fetchall()
+
+    mycursor.execute("SELECT * FROM tabla_acel")
+    acele = mycursor.fetchall()
+
+    mycursor.execute("SELECT * FROM tabla_dist")
+    dista = mycursor.fetchall()
+
+
+    for x in range(0,len(tempe)):
+        t=tempe[x]
+        temp.append(t[1])
+        h=hume[x]
+        hum.append(h[1])
+        a=acele[x]
+        acel.append(a[1])
+        d=dista[x]
+        dist.append(d[1])
+
+    figure, axis = plt.subplots(2, 2)
+
+    axis[0,0].plot(temp)
+    axis[0,0].set_title("Temperatura")
+
+    axis[1,0].plot(hum)
+    axis[1,0].set_title("Humedad")
+
+    axis[0,1].plot(acel)
+    axis[0,1].set_title("Aceleracion")
+
+    axis[1,1].plot(dist)
+    axis[1,1].set_title("Distancia")
+   
+    plt.show()
+
+actualizarGraficos()
 
 while True:
-    respuesta = input("Direccion del dron ")
-    lista = respuesta.split("-")
-
-
-    if lista[0] == "w":
-        tello.move_forward(int(lista[1]))
-
-    elif lista[0] == "a":
-        tello.move_left(int(lista[1]))
-
-    elif lista[0] == "s":
-        tello.move_back(int(lista[1]))
-
-    elif lista[0] == "d":
-        tello.move_right(int(lista[1]))
-
-    elif lista[0] == "q":
-        tello.rotate_counter_clockwise(int(lista[1]))
-
-    elif lista[0] == "e":
-        tello.rotate_clockwise(int(lista[1]))
-
-    elif lista[0] == "x":
-        tello.move_down(int(lista[1]))
-
-    elif lista[0] == "z":
-        tello.move_up(int(lista[1]))
-        
-    elif lista[0] == "f":
-        tello.land()
-    
-    elif lista[0] == "p":
-        tello.takeoff()
-        
-    elif lista[0] == "off":
-        tello.land()
-        tello.end()
-        break
-        
-    else :
-        print("Comando no reconocido")
-        
+    print(keyboard.read_key())
+    if keyboard.read_key() == "r":
+        print("Actualizando datos...")
+        actualizarGraficos()
