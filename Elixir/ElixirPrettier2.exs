@@ -21,8 +21,12 @@ defmodule Syntaxhighlighter do
   end
 
   defp charDetector([head | tail], list, status, val) do
+    IO.inspect(tail)
+    IO.inspect(list)
+
     if tail == [] do
-      helperCaller(list)
+      list
+      |> IO.inspect()
     else
       case head do
         a when status == "string" ->
@@ -41,7 +45,7 @@ defmodule Syntaxhighlighter do
           if head == "•" do
             charDetector(
               tail,
-              list <> "<span class=\"comment\">" <> head <> "</span>",
+              list <> "<span class=\"comment\">" <> val <> "</span>",
               "",
               ""
             )
@@ -50,10 +54,10 @@ defmodule Syntaxhighlighter do
           end
 
         a when status == "method" ->
-          if a == " " do
+          if a in [" ", "(", "."] do
             charDetector(
-              tail,
-              list <> "<span class=\"keyboard\">" <> val <> "</span>",
+              [head | tail],
+              list <> "<span class=\"text\">" <> val <> "</span>",
               "",
               ""
             )
@@ -76,7 +80,7 @@ defmodule Syntaxhighlighter do
         a when a in ["\"", "\'"] ->
           charDetector(tail, list, "string", val <> head)
 
-        a when a in ["("] ->
+        "(" ->
           if status == "text" do
             charDetector(
               tail,
@@ -96,8 +100,6 @@ defmodule Syntaxhighlighter do
               ""
             )
           end
-
-          charDetector(tail, list <> "<span class=\"parenthesis\">" <> head <> "</span>", "", "")
 
         "#" ->
           charDetector(tail, list, "comment", val <> head)
@@ -134,12 +136,12 @@ defmodule Syntaxhighlighter do
                 "<span class=\"text\">" <>
                 val <>
                 "</span>" <>
-                "<span class=\"operador\">" <> head <> "</span>",
+                "<span class=\"operator\">" <> head <> "</span>",
               "",
               ""
             )
           else
-            charDetector(tail, list <> "<span class=\"operador\">" <> head <> "</span>", "", "")
+            charDetector(tail, list <> "<span class=\"operator\">" <> head <> "</span>", "", "")
           end
 
         "@" ->
@@ -150,11 +152,27 @@ defmodule Syntaxhighlighter do
             ""
           )
 
+        "=" ->
+          if status == "text" do
+            charDetector(
+              tail,
+              list <>
+                "<span class=\"variable\">" <>
+                val <>
+                " </span>" <>
+                "<span class=\"operator\">" <> head <> " </span>",
+              "",
+              ""
+            )
+          else
+            charDetector(tail, list <> "<span class=\"operator\">" <> head <> " </span>", "", "")
+          end
+
         "." ->
           if status == "text" do
             charDetector(
               tail,
-              list <> "<span class=\"keyword\">" <> val <> " </span>",
+              list <> "<span class=\"keyword\">" <> val <> "</span>",
               "method",
               head
             )
@@ -170,17 +188,31 @@ defmodule Syntaxhighlighter do
             ""
           )
 
-        a when val in ["def", "if", "else", "elif", "for", "while", "in", "return"] ->
+        a
+        when val in [
+               "def",
+               "int",
+               "if",
+               "else",
+               "elif",
+               "for",
+               "while",
+               "in ",
+               "return",
+               "from",
+               "import",
+               "break"
+             ] ->
           charDetector(
             tail,
-            list <> "<span class=\"keyword\">" <> val <> "</span>",
+            list <> "<span class=\"keyword\">" <> val <> " </span>",
             "keyword",
             ""
           )
 
         " " ->
           if val != "" do
-            charDetector(tail, list <> "<span class=\"text\">" <> val <> "</span>", "", "")
+            charDetector(tail, list <> "<span class=\"text\">" <> val <> " </span>", "", "")
           else
             charDetector(tail, list, "", "")
           end
@@ -215,6 +247,7 @@ defmodule Syntaxhighlighter do
             .parenthesis { color: brown; }
             .method { color: brown; }
             .decorator { color: grey; }
+            .variable { color: brown; }
             .text { color:black }
         </style>
     </head>

@@ -16,13 +16,66 @@
         .parenthesis { color: brown; }
         .method { color: brown; }
         .decorator { color: grey; }
+        .variable { color: brown; }
         .text { color:black }
     </style>
 </head>
 <body>
 <pre>
-<span class="parenthesis">(</span><span class="string">"hello world"</span><span class="parenthesis">)</span>
+<span class="keyword">from </span><span class="text">djitellopy </span><span class="keyword">import </span><span class="text">Tello </span>
 
+<span class="text">tello </span><span class="operator">= </span><span class="function">Tello</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+<span class="keyword">tello</span><span class="text">.connect</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+
+<span class="comment">#hola como estas </span>
+
+<span class="keyword">tello</span><span class="text">.streamon</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+<span class="text">frame_read </span><span class="operator">= </span><span class="keyword">tello</span><span class="text">.get_frame_read</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+<span class="comment"># Print battery status </span>
+<span class="function">print</span><span class="parenthesis">(</span><span class="string">"Battery status: "</span><span class="operator">,</span><span class="keyword">tello</span><span class="text">.get_battery</span><span class="parenthesis">(</span><span class="parenthesis">)</span><span class="operator">,</span><span class="string">"s"</span><span class="parenthesis">)</span>
+
+<span class="keyword">while </span><span class="text">True</span><span class="operator">:</span>
+<span class="text">respuesta </span><span class="operator">= </span><span class="function">input</span><span class="parenthesis">(</span><span class="string">"Direccion del dron "</span><span class="parenthesis">)</span>
+<span class="text">lista </span><span class="operator">= </span><span class="keyword">respuesta</span><span class="text">.split</span><span class="parenthesis">(</span><span class="string">"-"</span><span class="parenthesis">)</span>
+
+
+<span class="keyword">if </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"w"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.move_forward</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"a"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.move_left</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"s"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.move_back</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"d"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.move_right</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"q"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.rotate_counter_clockwise</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"e"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.rotate_clockwise</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"x"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.move_down</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"z"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.move_up</span><span class="parenthesis">(</span><span class="function">int</span><span class="parenthesis">(</span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">1</span><span class="parenthesis">]</span><span class="parenthesis">)</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"f"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.land</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"p"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.takeoff</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+
+<span class="keyword">elif </span><span class="text">lista</span><span class="parenthesis">[</span><span class="number">0</span><span class="parenthesis">]</span><span class="operator">= </span><span class="operator">= </span><span class="string">"off"</span><span class="operator">:</span>
+<span class="keyword">tello</span><span class="text">.land</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+<span class="keyword">tello</span><span class="text">.end</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+<span class="keyword">break </span>
+
+<span class="keyword">else </span><span class="operator">:</span>
+<span class="function">print</span><span class="parenthesis">(</span><span class="string">"Comando no reconocido"</span><span class="parenthesis">)</span>
 
 </pre>
 </body>
