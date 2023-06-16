@@ -1,3 +1,5 @@
+print("Hello from pythonfile1.py")
+
 import mysql.connector
 import matplotlib.pyplot as plt
 import numpy as np

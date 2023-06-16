@@ -1,10 +1,31 @@
 defmodule Syntaxhighlighter do
-  def highlight(file) do
+  def highlight(directory_path) do
+    {:ok, path} = :file.get_cwd()
+    IO.puts(path)
+
+    read_files_from_folder(directory_path)
+    |> Task.async_stream(&highlight_file/1)
+    |> Stream.map(&Task.await/1)
+    |> Enum.each(fn
+      {:ok, result} -> IO.puts("File processed successfully: #{result}")
+      {:error, error} -> IO.puts("Error processing file: #{error}")
+    end)
+  end
+
+  defp read_files_from_folder(directory_path) do
+    File.ls!(directory_path)
+    |> Enum.map(fn file -> Path.join(directory_path, file) end)
+  end
+
+  defp highlight_file(file) do
     expanded_path = Path.expand(file)
 
     IO.puts("Reading file: #{expanded_path}")
 
     case File.read(expanded_path) do
+      :ok ->
+        IO.puts("Failed to read file: #{expanded_path}")
+
       {:ok, text} ->
         highlighted_text =
           text
@@ -13,20 +34,13 @@ defmodule Syntaxhighlighter do
           |> Enum.join("\n")
 
         html_content = build_html_content(highlighted_text)
-        File.write("example.html", html_content)
-
-      {:error, reason} ->
-        IO.puts("Failed to read file: #{reason}")
+        File.write("#{Path.basename(expanded_path)}.html", html_content)
     end
   end
 
   defp charDetector([head | tail], list, status, val) do
-    IO.inspect(tail)
-    IO.inspect(list)
-
     if tail == [] do
       list
-      |> IO.inspect()
     else
       case head do
         a when status == "string" ->
@@ -152,7 +166,7 @@ defmodule Syntaxhighlighter do
             ""
           )
 
-        "=" ->
+        a when a in ["=", "!"] ->
           if status == "text" do
             charDetector(
               tail,
@@ -190,6 +204,7 @@ defmodule Syntaxhighlighter do
 
         a
         when val in [
+               "print",
                "def",
                "int",
                "if",
@@ -261,7 +276,4 @@ defmodule Syntaxhighlighter do
   end
 end
 
-{:ok, path} = :file.get_cwd()
-IO.puts(path)
-
-Syntaxhighlighter.highlight("pythonfile.py")
+Syntaxhighlighter.highlight("PythonFiles")
