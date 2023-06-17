@@ -1,31 +1,28 @@
-print ("Hello from pythonfile3.py")
+import json
+from functools import reduce
 
-import math
+# List of dictionaries
+data = [
+    {"name": "Alice", "age": 25, "city": "New York"},
+    {"name": "Bob", "age": 30, "city": "Chicago"},
+    {"name": "Charlie", "age": 35, "city": "San Francisco"},
+]
 
-sum=0
-cont=0
-mes=0
+# Convert list into JSON
+json_data = json.dumps(data)
+print(f"JSON data: {json_data}")
 
-final=3000
-listaPRE = [0,0,0,0,0,0,0,0,0,0,0,0]
+# Load data from JSON
+loaded_data = json.loads(json_data)
 
-listaPOS = []
+# Use map() to get all names
+names = list(map(lambda x: x['name'], loaded_data))
+print(f"Names: {names}")
 
-for i in len(listaPRE):
-    if listaPRE[i] != 0:
-        cont+=1
-        sum+=listaPRE[i]
+# Use filter() to get data of people older than 30
+older_than_30 = list(filter(lambda x: x['age'] > 30, loaded_data))
+print(f"People older than 30: {older_than_30}")
 
-if sum != 0:
-    final = final - sum
-
-mes=final/78
-
-for i in len(listaPRE):
-    if listaPRE[i] == 0:
-        listaPOS[i] = round(mes)
-    if listaPRE[i] != 0:
-        listaPOS[i] = listaPOS[i]
-
-
-print(listaPOS)
+# Use reduce() to find the longest name
+longest_name = reduce(lambda a, b: a if len(a['name']) > len(b['name']) else b, loaded_data)
+print(f"Person with the longest name: {longest_name['name']}")

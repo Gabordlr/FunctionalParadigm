@@ -1,5 +1,3 @@
-print("Hello from pythonfile2.py")
-
 def lenguaje (baseCase, rules, count):
     count += 1
     newCase = []
