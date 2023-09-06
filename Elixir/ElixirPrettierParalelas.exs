@@ -276,4 +276,15 @@ defmodule Syntaxhighlighter do
   end
 end
 
-Syntaxhighlighter.highlight("PythonFiles")
+defmodule Timing do
+  def time_execution(fun) do
+    :timer.tc(fun)
+    |> elem(0)
+    |> Kernel./(1_000_000)
+    |> IO.inspect()
+
+    IO.puts("s")
+  end
+end
+
+Timing.time_execution(fn -> Syntaxhighlighter.highlight("PythonFiles") end)
